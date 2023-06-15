@@ -1,2 +1,60 @@
 Refere Below Link:
 https://medium.com/jen-li-chen-in-data-science/hackerrank-sql-ff3e70081c4b 
+
+Codes and Explanation:
+Amber’s conglomerate corporation just acquired some new companies. Each of the companies follows this hierarchy:
+
+
+Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code.
+
+Note:
+
+The tables may contain duplicate records.
+The company_code is string, so the sorting should not be numeric. For example, if the company_codes are C_1, C_2, and C_10, then the ascending company_codes will be C_1, C_10, and C_2.
+Sample Input
+
+Company Table:
+
+
+Lead_Manager Table:
+
+
+Senior_Manager Table:
+
+
+Manager Table:
+
+
+Employee Table:
+
+
+Sample Output
+
+C1 Monika 1 2 1 2
+C2 Samantha 1 1 2 2
+Logic:
+
+The output table have company_code and founder, and the count for lead_manager, senior_manager, manager, and employee.
+
+Hence, we have to use the company_code and founder in the Company table, and then join the Company table with the other four tables.
+
+Solution:
+
+
+
+select c.company_code, c.founder,
+       count(distinct l.lead_manager_code),
+       count(distinct s.senior_manager_code),
+       count(distinct m.manager_code),
+       count(distinct e.employee_code)
+from Company as c 
+join Lead_Manager as l 
+on c.company_code = l.company_code
+join Senior_Manager as s
+on l.lead_manager_code = s.lead_manager_code
+join Manager as m 
+on m.senior_manager_code = s.senior_manager_code
+join Employee as e
+on e.manager_code = m.manager_code
+group by c.company_code, c.founder
+order by c.company_code;
